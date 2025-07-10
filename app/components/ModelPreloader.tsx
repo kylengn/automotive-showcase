@@ -7,7 +7,7 @@ import { useGLTF } from "@react-three/drei"
 const CAR_MODEL_URL = "/car/scene.gltf"
 
 export default function ModelPreloader() {
-  const [_, setIsPreloaded] = useState(false)
+  const [, setIsPreloaded] = useState(false)
 
   useEffect(() => {
     // Start preloading immediately
