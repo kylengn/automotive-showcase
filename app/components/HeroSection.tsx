@@ -61,7 +61,7 @@ export default function HeroSection() {
         </button>
 
         <button
-          className="group border-2 border-slate-300 hover:border-slate-400 text-slate-700 px-8 py-4 rounded-xl font-orbitron font-semibold transition-all duration-300 hover:bg-slate-50 backdrop-blur-sm flex items-center justify-center space-x-2"
+          className="group border-2 border-red-600 hover:border-orange-600 text-slate-700 px-8 py-4 rounded-xl font-orbitron font-semibold transition-all duration-300 hover:bg-slate-50 backdrop-blur-sm flex items-center justify-center space-x-2"
           onClick={openVideoModal}
         >
           <Play className="h-5 w-5 text-orange-600" />
