@@ -13,7 +13,7 @@ import ModelPreloader from "./ModelPreloader"
 import { CarProvider } from "../context/CarContext"
 import { ErrorBoundary } from "react-error-boundary"
 import { motion, AnimatePresence } from "framer-motion"
-import { ChevronLeft, Settings } from "lucide-react"
+import { ChevronLeft } from "lucide-react"
 import { ShowcaseUIProvider, useShowcaseUI } from "../context/ShowcaseUIContext"
 
 function ModelErrorFallback() {

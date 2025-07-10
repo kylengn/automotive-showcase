@@ -1,8 +1,8 @@
 "use client"
 
 import { useRef, useEffect, useMemo, useCallback, useState } from "react"
-import { useGLTF, useTexture } from "@react-three/drei"
-import { type Group, Mesh, MeshStandardMaterial, Object3D, TextureLoader, LinearMipmapLinearFilter, LinearFilter } from "three"
+import { useGLTF } from "@react-three/drei"
+import { type Group, Mesh, MeshStandardMaterial, Object3D, TextureLoader, LinearMipmapLinearFilter, LinearFilter, BufferGeometry } from "three"
 import { useCarContext } from "../context/CarContext"
 
 // Use the local car model
@@ -70,7 +70,7 @@ export default function CarModel() {
   const optimizeScene = useCallback(() => {
     if (!scene || isOptimized) return
 
-    const geometries: any[] = []
+    const geometries: BufferGeometry[] = []
     const materials: MeshStandardMaterial[] = []
     const meshes: Mesh[] = []
 

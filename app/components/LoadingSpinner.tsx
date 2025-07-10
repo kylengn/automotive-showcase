@@ -25,11 +25,6 @@ const STATUS_MESSAGES = {
   PREPARING_LAUNCH: "Preparing for launch...",
 } as const
 
-// Types
-interface LoadingStatusProps {
-  progress: number
-}
-
 // Helper functions
 const getStatusMessage = (progress: number): string => {
   if (progress < PROGRESS_THRESHOLDS.MODEL_LOADING) {
