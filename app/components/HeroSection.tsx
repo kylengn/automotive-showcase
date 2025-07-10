@@ -1,8 +1,15 @@
 "use client"
 
 import { ArrowRight, Play, Zap, Award, Shield } from "lucide-react"
+import { useShowcaseUI } from "../context/ShowcaseUIContext"
+import VideoModal, { useVideoModal } from "./VideoModal"
 
 export default function HeroSection() {
+  const { openConfigurator } = useShowcaseUI()
+  const { isVideoModalOpen, openVideoModal, closeVideoModal } = useVideoModal()
+
+  // Extract video ID from YouTube URL
+  const videoId = "Fm-kAoagXfM"
   return (
     <div className="px-8 lg:px-12 max-w-2xl">
       {/* Premium Badge */}
@@ -45,14 +52,20 @@ export default function HeroSection() {
 
       {/* CTA Buttons */}
       <div className="flex flex-col sm:flex-row gap-4">
-        <button className="group bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white px-8 py-4 rounded-xl font-orbitron font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-red-500/25 flex items-center justify-center space-x-2">
+        <button
+          className="group bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white px-8 py-4 rounded-xl font-orbitron font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-red-500/25 flex items-center justify-center space-x-2"
+          onClick={openConfigurator}
+        >
           <span>CONFIGURE NOW</span>
           <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
         </button>
 
-        <button className="group border-2 border-slate-300 hover:border-slate-400 text-slate-700 px-8 py-4 rounded-xl font-orbitron font-semibold transition-all duration-300 hover:bg-slate-50 backdrop-blur-sm flex items-center justify-center space-x-2">
-          <Play className="h-5 w-5" />
-          <span>WATCH FILM</span>
+        <button
+          className="group border-2 border-slate-300 hover:border-slate-400 text-slate-700 px-8 py-4 rounded-xl font-orbitron font-semibold transition-all duration-300 hover:bg-slate-50 backdrop-blur-sm flex items-center justify-center space-x-2"
+          onClick={openVideoModal}
+        >
+          <Play className="h-5 w-5 text-orange-600" />
+          <span className="bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">WATCH FILM</span>
         </button>
       </div>
 
@@ -71,6 +84,14 @@ export default function HeroSection() {
           <div className="text-slate-500 text-sm">0-60 SECONDS</div>
         </div>
       </div>
+
+      {/* Video Modal */}
+      <VideoModal
+        isOpen={isVideoModalOpen}
+        onClose={closeVideoModal}
+        videoId={videoId}
+        title="Luxury Automotive Showcase"
+      />
     </div>
   )
 }

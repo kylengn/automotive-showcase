@@ -5,8 +5,8 @@ import { useCarContext } from "../context/CarContext"
 import { Palette, Sparkles, Settings } from "lucide-react"
 
 const colors = [
-  { name: "Arctic White", value: 0xffffff, gradient: "from-white to-gray-100" },
-  { name: "Graphite Gray", value: 0x23272f, gradient: "from-gray-700 to-gray-900" },
+  { name: "Arctic White", value: 0xffffff, gradient: "from-white to-gray" },
+  { name: "Gilver", value: 0xcfc7b0, gradient: "from-gilver to-gilver" },
   { name: "Racing Red", value: 0xdc2626, gradient: "from-red-600 to-red-800" },
   { name: "Satin Teal", value: 0x1ecbe1, gradient: "from-cyan-400 to-teal-600" },
   { name: "Titanium Silver", value: 0x94a3b8, gradient: "from-slate-400 to-slate-600" },

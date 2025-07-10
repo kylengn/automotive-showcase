@@ -12,8 +12,8 @@ interface CarContextType {
 const CarContext = createContext<CarContextType | undefined>(undefined)
 
 export function CarProvider({ children }: { children: ReactNode }) {
-  const [selectedColor, setSelectedColor] = useState<number>(0xffffff)
-  const [selectedMaterial, setSelectedMaterial] = useState<string>("glossy")
+  const [selectedColor, setSelectedColor] = useState<number>(0xcfc7b0)
+  const [selectedMaterial, setSelectedMaterial] = useState<string>("metallic")
 
   return (
     <CarContext.Provider
