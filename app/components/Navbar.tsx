@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Menu, X, Zap } from "lucide-react"
 import { motion } from "framer-motion"
+import Link from "next/link"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -21,26 +22,26 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <a href="/" className="flex items-center space-x-2" aria-label="VELOCITY Automotive - Home">
+            <Link href="/" className="flex items-center space-x-2" aria-label="VELOCITY Automotive - Home">
               <div className="bg-gradient-to-r from-red-500 to-orange-500 p-2 rounded-[8px]">
                 <Zap className="h-6 w-6 text-white" aria-hidden="true" />
               </div>
               <span className="font-orbitron font-bold text-2xl text-slate-800 tracking-wider">VELOCITY</span>
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:block">
             <div className="ml-10 flex items-baseline space-x-8" role="list">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
                   href={link.href}
                   className="text-slate-600 hover:text-slate-800 px-3 py-2 text-sm font-medium transition-colors duration-300 hover:bg-slate-100 rounded-lg"
                   role="listitem"
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -85,7 +86,7 @@ export default function Navbar() {
           <div className="bg-white/95 backdrop-blur-md border-t border-slate-200/50 shadow-lg" role="menu">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
                   href={link.href}
                   className="text-slate-600 hover:text-slate-800 block px-3 py-2 text-base font-medium transition-colors duration-300 hover:bg-slate-100 rounded-lg"
@@ -93,7 +94,7 @@ export default function Navbar() {
                   role="menuitem"
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
               <div className="pt-4 pb-2">
                 <button
