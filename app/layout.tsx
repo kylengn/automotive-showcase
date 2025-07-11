@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description:
     "Experience the pinnacle of automotive excellence with our interactive 3D supercar configurator. Customize, explore, and own the future.",
   keywords: "luxury supercars, automotive configurator, 3D car customization, premium vehicles",
-    generator: 'v0.dev'
+  generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -24,7 +24,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head>
       <body className={`${inter.className} ${orbitron.variable}`}>{children}</body>
     </html>
   )
