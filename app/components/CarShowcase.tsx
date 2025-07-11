@@ -13,8 +13,10 @@ import ModelPreloader from "./ModelPreloader"
 import { CarProvider } from "../context/CarContext"
 import { ErrorBoundary } from "react-error-boundary"
 import { motion, AnimatePresence } from "framer-motion"
-import { ChevronLeft } from "lucide-react"
+import { ChevronLeft, Info, Rotate3d } from "lucide-react"
 import { ShowcaseUIProvider, useShowcaseUI } from "../context/ShowcaseUIContext"
+import { useState } from "react"
+import { useIsMobile } from "../../hooks/use-mobile"
 
 function ModelErrorFallback() {
   return <CarModelFallback />
@@ -22,30 +24,59 @@ function ModelErrorFallback() {
 
 function CarShowcaseInner() {
   const { isConfiguratorOpen, toggleConfigurator } = useShowcaseUI()
+  const [showHero, setShowHero] = useState(true)
+  const isMobile = useIsMobile()
 
-  // Camera and OrbitControls settings
+  // Camera and OrbitControls settings with mobile-specific adjustments
   const cameraProps = isConfiguratorOpen
-    ? { position: [6, 1.5, 0] as [number, number, number], fov: 32 }
-    : { position: [5, 2.5, 6] as [number, number, number], fov: 40 }
+    ? {
+      position: isMobile ? [8, 2, 0] as [number, number, number] : [6, 1.5, 0] as [number, number, number],
+      fov: isMobile ? 35 : 32
+    }
+    : {
+      position: isMobile ? [7, 3, 8] as [number, number, number] : [5, 2.5, 6] as [number, number, number],
+      fov: isMobile ? 45 : 40
+    }
+
   const orbitProps = isConfiguratorOpen
-    ? { autoRotate: false, minDistance: 2.5, maxDistance: 7, target: [0, 0.6, 0] as [number, number, number] }
-    : { autoRotate: true, autoRotateSpeed: 6, minDistance: 3, maxDistance: 18, target: [0, 0, 0] as [number, number, number] }
+    ? {
+      autoRotate: false,
+      minDistance: isMobile ? 3.5 : 2.5,
+      maxDistance: isMobile ? 10 : 7,
+      target: [0, 0.6, 0] as [number, number, number]
+    }
+    : {
+      autoRotate: true,
+      autoRotateSpeed: 6,
+      minDistance: isMobile ? 4.5 : 3,
+      maxDistance: isMobile ? 22 : 18,
+      target: [0, 0, 0] as [number, number, number]
+    }
 
   return (
     <div className="relative w-full h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
       <Navbar />
 
+      {/* Floating Hide/Show UI button (mobile only) */}
+      {!isConfiguratorOpen && <button
+        className="block lg:hidden fixed top-20 right-6 z-40 text-slate-600"
+        onClick={() => setShowHero((v) => !v)}
+        aria-label="Show UI"
+      >
+        {showHero ? <Rotate3d className="h-6 w-6" /> : <Info className="h-6 w-6" />}
+      </button>}
+
       {/* Show HeroSection immediately */}
       <div className="absolute inset-0 pointer-events-none pt-16 z-10">
         <AnimatePresence>
-          {!isConfiguratorOpen && (
+          {!isConfiguratorOpen && showHero && (
             <motion.div
               key="hero"
               initial={{ opacity: 0, x: -80 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -80 }}
               transition={{ type: "spring", stiffness: 200, damping: 30 }}
-              className="absolute left-0 top-16 bottom-0 w-1/2 pointer-events-auto h-full flex flex-col justify-center"
+              className="absolute left-0 top-16 bottom-0 w-full lg:w-1/2 pointer-events-auto h-full flex flex-col justify-center"
             >
               <HeroSection />
             </motion.div>
@@ -61,7 +92,7 @@ function CarShowcaseInner() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 400, opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="absolute right-0 top-16 bottom-0 w-96 pointer-events-auto"
+              className="absolute right-0 top-16 bottom-0 w-full sm:w-96 pointer-events-auto"
               style={{ zIndex: 20 }}
             >
               <button
@@ -77,8 +108,8 @@ function CarShowcaseInner() {
         </AnimatePresence>
 
         {/* Center area - Allows 3D interaction */}
-        <div className="absolute left-1/2 top-16 bottom-0 w-1/2 -ml-1/2 pointer-events-none">
-          {/* This area allows 3D model interaction */}
+        <div className="absolute left-1/2 top-16 bottom-0 w-1/2 -ml-1/2 pointer-events-none hidden lg:block">
+          {/* This area allows 3D model interaction on desktop */}
         </div>
       </div>
 

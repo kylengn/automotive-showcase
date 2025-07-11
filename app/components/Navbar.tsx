@@ -42,8 +42,8 @@ export default function Navbar() {
           </div>
 
           {/* CTA Button */}
-          <div className="hidden lg:block">
-            <button className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white px-6 py-2 rounded-[8px] font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
+          <div className="hidden xl:block">
+            <button className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white px-6 py-2 rounded-[8px] font-semibold transition-all duration-300 shadow-lg">
               Book Test Drive
             </button>
           </div>
@@ -74,7 +74,7 @@ export default function Navbar() {
                 </a>
               ))}
               <div className="pt-4 pb-2">
-                <button className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white px-6 py-3 rounded-[8px] font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <button className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white px-6 py-3 rounded-[8px] font-semibold transition-all duration-300 shadow-lg">
                   Book Test Drive
                 </button>
               </div>
