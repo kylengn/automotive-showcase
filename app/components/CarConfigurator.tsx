@@ -37,7 +37,7 @@ export default function CarConfigurator() {
   ]
 
   return (
-    <div className="h-full bg-white/50 backdrop-blur-sm border-l border-slate-200/50 overflow-hidden shadow-lg">
+    <div className="h-full bg-white/50 backdrop-blur-sm border-l border-slate-200/50 overflow-y-auto shadow-lg">
       {/* Header */}
       <div className="p-4 sm:p-6 border-b border-slate-200/50">
         <div className="flex items-center space-x-3 mb-2">
@@ -68,7 +68,7 @@ export default function CarConfigurator() {
       </div>
 
       {/* Content */}
-      <div className="p-4 sm:p-6 overflow-y-auto h-full">
+      <div className="p-4 sm:p-6">
         {activeSection === "exterior" && (
           <div className="space-y-6 sm:space-y-8">
             {/* Color Selection */}

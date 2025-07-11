@@ -54,20 +54,21 @@ function CarShowcaseInner() {
     }
 
   return (
-    <div className="relative w-full h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+    <main className="relative w-full h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100" role="main" aria-label="VELOCITY Automotive Showcase">
       <Navbar />
 
       {/* Floating Hide/Show UI button (mobile only) */}
       {!isConfiguratorOpen && <button
-        className="block lg:hidden fixed top-20 right-6 z-40 text-slate-600"
+        className="block lg:hidden fixed top-20 right-6 sm:right-8 z-40 text-slate-600"
         onClick={() => setShowHero((v) => !v)}
-        aria-label="Show UI"
+        aria-label="Toggle user interface visibility"
+        aria-pressed={showHero}
       >
         {showHero ? <Rotate3d className="h-6 w-6" /> : <Info className="h-6 w-6" />}
       </button>}
 
       {/* Show HeroSection immediately */}
-      <div className="absolute inset-0 pointer-events-none pt-16 z-10">
+      <section className="absolute inset-0 pointer-events-none pt-16 z-10" aria-label="Hero section">
         <AnimatePresence>
           {!isConfiguratorOpen && showHero && (
             <motion.div
@@ -77,6 +78,7 @@ function CarShowcaseInner() {
               exit={{ opacity: 0, x: -80 }}
               transition={{ type: "spring", stiffness: 200, damping: 30 }}
               className="absolute left-0 top-16 bottom-0 w-full lg:w-1/2 pointer-events-auto h-full flex flex-col justify-center"
+              role="banner"
             >
               <HeroSection />
             </motion.div>
@@ -86,7 +88,7 @@ function CarShowcaseInner() {
         {/* Right Panel - Configurator - Animated */}
         <AnimatePresence>
           {isConfiguratorOpen && (
-            <motion.div
+            <motion.aside
               key="configurator"
               initial={{ x: 400, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -94,106 +96,112 @@ function CarShowcaseInner() {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className="absolute right-0 top-16 bottom-0 w-full sm:w-96 pointer-events-auto"
               style={{ zIndex: 20 }}
+              role="complementary"
+              aria-label="Car configuration panel"
             >
               <button
-                className={`absolute top-8 right-0 z-30 bg-gradient-to-r from-red-500 to-orange-500 text-white p-3 rounded-l-xl shadow-lg flex items-center transition-all duration-300 pointer-events-auto ${isConfiguratorOpen ? "" : "ring-2 ring-orange-400"}`}
+                className={`absolute top-4 right-0 z-30 bg-gradient-to-r from-red-500 to-orange-500 text-white p-3 rounded-l-xl shadow-lg flex items-center transition-all duration-300 pointer-events-auto ${isConfiguratorOpen ? "" : "ring-2 ring-orange-400"}`}
                 onClick={toggleConfigurator}
-                aria-label={isConfiguratorOpen ? "Close Configurator" : "Open Configurator"}
+                aria-label={isConfiguratorOpen ? "Close car configurator" : "Open car configurator"}
+                aria-expanded={isConfiguratorOpen}
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <CarConfigurator />
-            </motion.div>
+            </motion.aside>
           )}
         </AnimatePresence>
 
         {/* Center area - Allows 3D interaction */}
-        <div className="absolute left-1/2 top-16 bottom-0 w-1/2 -ml-1/2 pointer-events-none hidden lg:block">
+        <div className="absolute left-1/2 top-16 bottom-0 w-1/2 -ml-1/2 pointer-events-none hidden lg:block" role="region" aria-label="3D model interaction area">
           {/* This area allows 3D model interaction on desktop */}
         </div>
-      </div>
+      </section>
 
       {/* 3D Canvas with optimized settings */}
-      <Canvas
-        camera={cameraProps}
-        shadows
-        className="bg-transparent"
-        gl={{
-          antialias: true,
-          alpha: true,
-          powerPreference: "high-performance",
-          stencil: false,
-          depth: true,
-          logarithmicDepthBuffer: false, // Disable for better performance
-          precision: "highp" // Use high precision for better quality
-        }}
-        dpr={[1, 2]}
-        performance={{ min: 0.5 }}
-        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
-        onCreated={({ gl }) => {
-          // Optimize WebGL context
-          gl.setClearColor(0x000000, 0)
-          gl.shadowMap.enabled = true
-          gl.shadowMap.type = 2 // PCFSoftShadowMap
-          gl.toneMapping = 3 // ACESFilmicToneMapping
-          gl.toneMappingExposure = 1.2
-        }}
-      >
-        <Suspense fallback={<LoadingSpinner />}>
-          <ambientLight intensity={0.6} color="#ffffff" />
-          <directionalLight
-            position={[6, 8, 4]}
-            intensity={2.2}
-            castShadow
-            shadow-mapSize-width={2048}
-            shadow-mapSize-height={2048}
-            shadow-camera-far={30}
-            shadow-camera-left={-15}
-            shadow-camera-right={15}
-            shadow-camera-top={15}
-            shadow-camera-bottom={-15}
-            color="#ffffff"
-          />
-          <directionalLight position={[-4, 6, 2]} intensity={0.8} color="#ffffff" />
-          <directionalLight position={[0, 10, 0]} intensity={1.0} color="#ffffff" />
-          <directionalLight position={[0, 2, 8]} intensity={0.6} color="#ffffff" />
-          <Environment resolution={256}>
-            <Lightformer intensity={2.5} color="white" position={[0, 6, -8]} scale={[12, 6, 1]} />
-            <Lightformer intensity={1.2} color="white" position={[-6, 1, -1]} scale={[3, 0.5, 1]} />
-            <Lightformer intensity={1.2} color="white" position={[6, 1, -1]} scale={[3, 0.5, 1]} />
-          </Environment>
-          <ErrorBoundary fallback={<ModelErrorFallback />}>
-            <CarModel />
-          </ErrorBoundary>
-          <ContactShadows
-            position={[0, -1.15, 0]}
-            opacity={0.95}
-            scale={32}
-            blur={0.7}
-            far={10}
-            resolution={512}
-            color="#222"
-          />
-          <mesh position={[0, -1.2, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-            <circleGeometry args={[8, 64]} />
-            <meshStandardMaterial color="#e5e7eb" roughness={0.8} metalness={0.1} transparent opacity={0.7} />
-          </mesh>
-          <OrbitControls
-            enablePan={true}
-            enableZoom={true}
-            enableRotate={true}
-            minPolarAngle={0.2}
-            maxPolarAngle={Math.PI / 2.1}
-            dampingFactor={0.05}
-            enableDamping={true}
-            panSpeed={1.0}
-            rotateSpeed={1.0}
-            zoomSpeed={1.0}
-            {...orbitProps}
-          />
-        </Suspense>
-      </Canvas>
-    </div>
+      <section className="absolute inset-0" role="region" aria-label="3D car model viewer">
+        <Canvas
+          camera={cameraProps}
+          shadows
+          className="bg-transparent"
+          gl={{
+            antialias: true,
+            alpha: true,
+            powerPreference: "high-performance",
+            stencil: false,
+            depth: true,
+            logarithmicDepthBuffer: false, // Disable for better performance
+            precision: "highp" // Use high precision for better quality
+          }}
+          dpr={[1, 2]}
+          performance={{ min: 0.5 }}
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
+          onCreated={({ gl }) => {
+            // Optimize WebGL context
+            gl.setClearColor(0x000000, 0)
+            gl.shadowMap.enabled = true
+            gl.shadowMap.type = 2 // PCFSoftShadowMap
+            gl.toneMapping = 3 // ACESFilmicToneMapping
+            gl.toneMappingExposure = 1.2
+          }}
+          aria-label="Interactive 3D luxury car model"
+        >
+          <Suspense fallback={<LoadingSpinner />}>
+            <ambientLight intensity={0.6} color="#ffffff" />
+            <directionalLight
+              position={[6, 8, 4]}
+              intensity={2.2}
+              castShadow
+              shadow-mapSize-width={2048}
+              shadow-mapSize-height={2048}
+              shadow-camera-far={30}
+              shadow-camera-left={-15}
+              shadow-camera-right={15}
+              shadow-camera-top={15}
+              shadow-camera-bottom={-15}
+              color="#ffffff"
+            />
+            <directionalLight position={[-4, 6, 2]} intensity={0.8} color="#ffffff" />
+            <directionalLight position={[0, 10, 0]} intensity={1.0} color="#ffffff" />
+            <directionalLight position={[0, 2, 8]} intensity={0.6} color="#ffffff" />
+            <Environment resolution={256}>
+              <Lightformer intensity={2.5} color="white" position={[0, 6, -8]} scale={[12, 6, 1]} />
+              <Lightformer intensity={1.2} color="white" position={[-6, 1, -1]} scale={[3, 0.5, 1]} />
+              <Lightformer intensity={1.2} color="white" position={[6, 1, -1]} scale={[3, 0.5, 1]} />
+            </Environment>
+            <ErrorBoundary fallback={<ModelErrorFallback />}>
+              <CarModel />
+            </ErrorBoundary>
+            <ContactShadows
+              position={[0, -1.15, 0]}
+              opacity={0.95}
+              scale={32}
+              blur={0.7}
+              far={10}
+              resolution={512}
+              color="#222"
+            />
+            <mesh position={[0, -1.2, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+              <circleGeometry args={[8, 64]} />
+              <meshStandardMaterial color="#e5e7eb" roughness={0.8} metalness={0.1} transparent opacity={0.7} />
+            </mesh>
+            <OrbitControls
+              enablePan={true}
+              enableZoom={true}
+              enableRotate={true}
+              minPolarAngle={0.2}
+              maxPolarAngle={Math.PI / 2.1}
+              dampingFactor={0.05}
+              enableDamping={true}
+              panSpeed={1.0}
+              rotateSpeed={1.0}
+              zoomSpeed={1.0}
+              {...orbitProps}
+            />
+          </Suspense>
+        </Canvas>
+      </section>
+    </main>
   )
 }
 
